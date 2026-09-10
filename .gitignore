@@ -1,0 +1,41 @@
+# Secrets / real configuration - never commit
+.env
+config/device.json
+firmware/include/secrets.h
+mosquitto/config/mosquitto.passwd
+mosquitto/config/acl.conf
+
+# PlatformIO
+firmware/.pio/
+firmware/.vscode/
+.pio/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Node (if any tooling is added later)
+node_modules/
+
+# Docker / Mosquitto runtime state (recreated on demand, not checked in)
+mosquitto/data/
+mosquitto/log/
+
+# Simulation / test output (disposable, not committed)
+simulator/output/
+*.simlog
+energy/output/
+reports/*.generated.*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

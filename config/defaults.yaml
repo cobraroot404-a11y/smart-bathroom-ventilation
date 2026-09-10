@@ -1,0 +1,76 @@
+# Canonical default configuration for the Automated Energy-Efficient Bathroom
+# Ventilation System.
+#
+# This file is the single documented source of truth for tunable values.
+# It is consumed directly by the Python automation service and simulator
+# (via config/device.example.json + environment overrides) and mirrored,
+# with matching comments, in firmware/include/config.h for the ESP32 build
+# (native C++ has no YAML parser in this prototype, so the firmware copy is
+# kept in sync by hand — see docs/architecture.md "Configuration" section).
+#
+# All values here are safe, conservative starting points for a typical
+# domestic bathroom and MUST be recalibrated per docs/physical-commissioning.md
+# after installation in a real room.
+
+device:
+  device_id: "bathroom-vent-01"
+  schema_version: 1
+
+thresholds:
+  # Relative humidity, percent (0-100)
+  fan_on_percent: 70.0
+  fan_off_percent: 60.0
+  # Sanity bounds for sensor validation - readings outside this range are
+  # rejected as impossible/invalid rather than acted on.
+  humidity_min_valid_percent: 0.0
+  humidity_max_valid_percent: 100.0
+  temperature_min_valid_celsius: -10.0
+  temperature_max_valid_celsius: 60.0
+
+timing:
+  sensor_sample_interval_seconds: 5
+  telemetry_publish_interval_seconds: 10
+  min_fan_on_seconds: 120
+  min_fan_off_seconds: 30
+  max_continuous_runtime_seconds: 1800
+  stale_telemetry_timeout_seconds: 60
+  # A retained "fan/desired" MQTT command older than this is treated as
+  # stale (e.g. replayed after a long outage) and ignored in favor of
+  # local fallback control. Defaults to the same window as telemetry
+  # staleness for a single, easy-to-reason-about safety margin.
+  stale_command_timeout_seconds: 60
+  manual_override_default_duration_seconds: 1800
+  manual_override_max_duration_seconds: 7200
+
+relay:
+  startup_state: "off"          # relay must always boot de-energized
+  active_low: true              # see docs/hardware.md for module-specific verification
+  gpio_pin: 27                  # not an ESP32 boot-strapping pin
+  sensor_invalid_safe_state: "off"  # "off" or "hold_last_state" - see docs/safety.md
+
+sensor:
+  type: "sht31"                 # "sht31", "sht40", or "dht22"
+  i2c_sda_gpio: 21
+  i2c_scl_gpio: 22
+  consecutive_failure_limit: 3
+  read_retry_attempts: 2
+
+rise_rate_detection:
+  enabled: false                # optional feature, disabled by default - see docs/testing.md
+  rise_threshold_percent_per_minute: 3.0
+  window_seconds: 60
+  min_valid_samples: 4
+
+mqtt:
+  broker_host: "localhost"
+  broker_port: 1883
+  keepalive_seconds: 30
+  qos_telemetry: 1
+  qos_state: 1
+  qos_command: 1
+  reconnect_backoff_initial_seconds: 1
+  reconnect_backoff_max_seconds: 60
+  max_payload_bytes: 2048
+
+energy:
+  fan_power_watts: 25.0

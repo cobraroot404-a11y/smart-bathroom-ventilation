@@ -1,0 +1,20 @@
+{
+  "_comment": "Copy this file to device.json (git-ignored) and fill in real values. Never commit real Wi-Fi or MQTT credentials.",
+  "schema_version": 1,
+  "device_id": "bathroom-vent-01",
+  "wifi": {
+    "ssid": "YOUR_WIFI_SSID",
+    "password": "YOUR_WIFI_PASSWORD"
+  },
+  "mqtt": {
+    "broker_host": "192.168.1.10",
+    "broker_port": 1883,
+    "username": "bathroom-vent-device",
+    "password": "CHANGE_ME_DEVICE_PASSWORD",
+    "use_tls": false
+  },
+  "overrides": {
+    "fan_on_percent": 70.0,
+    "fan_off_percent": 60.0
+  }
+}

@@ -1,0 +1,62 @@
+# Compressed-timer configuration used ONLY by
+# simulator/simulator/run_e2e_demo.py so the scripted end-to-end
+# demonstration completes in well under a minute instead of the ~30
+# minutes a full max_continuous_runtime_seconds would take with the real
+# production defaults in config/defaults.yaml. This file is never used by
+# the firmware or by a real deployment - see docs/testing.md.
+
+device:
+  device_id: "bathroom-vent-e2e-demo"
+  schema_version: 1
+
+thresholds:
+  fan_on_percent: 70.0
+  fan_off_percent: 60.0
+  humidity_min_valid_percent: 0.0
+  humidity_max_valid_percent: 100.0
+  temperature_min_valid_celsius: -10.0
+  temperature_max_valid_celsius: 60.0
+
+timing:
+  sensor_sample_interval_seconds: 1
+  telemetry_publish_interval_seconds: 1
+  min_fan_on_seconds: 3
+  min_fan_off_seconds: 2
+  max_continuous_runtime_seconds: 12
+  stale_telemetry_timeout_seconds: 4
+  stale_command_timeout_seconds: 4
+  manual_override_default_duration_seconds: 30
+  manual_override_max_duration_seconds: 60
+
+relay:
+  startup_state: "off"
+  active_low: true
+  gpio_pin: 27
+  sensor_invalid_safe_state: "off"
+
+sensor:
+  type: "sht31"
+  i2c_sda_gpio: 21
+  i2c_scl_gpio: 22
+  consecutive_failure_limit: 3
+  read_retry_attempts: 2
+
+rise_rate_detection:
+  enabled: false
+  rise_threshold_percent_per_minute: 3.0
+  window_seconds: 60
+  min_valid_samples: 4
+
+mqtt:
+  broker_host: "localhost"
+  broker_port: 18830
+  keepalive_seconds: 10
+  qos_telemetry: 1
+  qos_state: 1
+  qos_command: 1
+  reconnect_backoff_initial_seconds: 1
+  reconnect_backoff_max_seconds: 5
+  max_payload_bytes: 2048
+
+energy:
+  fan_power_watts: 25.0
