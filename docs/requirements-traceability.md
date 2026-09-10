@@ -25,7 +25,7 @@ and `docs/physical-commissioning.md` for the physical checklist.
 | FN-9 | Testable without physical hardware (simulation) | [simulator/](../simulator/), `scripts/run_full_check.py` | Full simulation run | `scripts/run_full_check.py` (all steps) | Verified | N/A |
 | FN-10 | Source code, tests, diagrams, config, docs included | Whole repository | Repository structure review | This file; `README.md` | Verified | N/A |
 | FN-11 | Passes all feasible automated checks | `scripts/run_full_check.py` | Full run before publication | See completion report | Verified | N/A |
-| FN-12 | Published to a new public GitHub repo, proprietary source-visible license | GitHub publication step | `gh repo view`, license file review | See completion report | Pending publication step | N/A |
+| FN-12 | Published to a new public GitHub repo, proprietary source-visible license | GitHub publication step | `gh repo view`, license file review | github.com/cobraroot404-a11y/smart-bathroom-ventilation | Verified | N/A |
 | FN-13 | Proprietary source-visible license, Gautham as copyright holder, no open-source terms | [LICENSE](../LICENSE) | Manual review | File content | Verified | N/A |
 | FN-14 | No secrets, no inappropriate third-party attribution | `.gitignore`, secret audit | `git log`/`git grep` scan before publish | See completion report | Verified | N/A |
 | FN-15 | Development system left clean, project not deleted | Cleanup step | Manual review of stopped services/containers | See completion report | Verified | N/A |
@@ -139,11 +139,11 @@ and `docs/physical-commissioning.md` for the physical checklist.
 
 | ID | Requirement | Status |
 |---|---|---|
-| GH-1 | New public repo in authenticated account, exact description, no open-source license selected | Pending - see completion report for the URL once published |
-| GH-2 | Default branch `main` | Pending - see completion report |
-| GH-3 | No collaborators, no org ownership, no bot config | Pending - see completion report |
-| GH-4 | No exposed secrets after push | Pending - see completion report (same audit as SC-7 applies to the pushed history) |
-| GH-5 | Issues/Discussions disabled where the platform allows; no contribution-inviting templates | Pending - see completion report for what could and could not be disabled |
+| GH-1 | New public repo in authenticated account, exact description, no open-source license selected | Verified - github.com/cobraroot404-a11y/smart-bathroom-ventilation; description matches exactly; GitHub's own license detection labels the committed LICENSE "Other" (not MIT/Apache/GPL/BSD) |
+| GH-2 | Default branch `main` | Verified - `defaultBranchRef.name == "main"` |
+| GH-3 | No collaborators, no org ownership, no bot config | Verified - only owner `cobraroot404-a11y` listed as collaborator/contributor |
+| GH-4 | No exposed secrets after push | Verified - same pattern/history scan as SC-7, run again against the pushed repository |
+| GH-5 | Issues/Discussions/Projects disabled; no contribution-inviting templates | Verified - `hasIssuesEnabled`, `hasDiscussionsEnabled`, `hasProjectsEnabled` all `false`. **Platform limitation**: GitHub does not offer a way to disable forking or pull-request submission on a public personal-account repository (`allow_forking: true`, not configurable for non-organization repos) - the LICENSE and README contribution policy govern instead; this is disclosed rather than claimed to be technically blocked |
 
 ## Cleanup
 
