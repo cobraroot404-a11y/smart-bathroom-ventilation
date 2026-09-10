@@ -61,9 +61,11 @@ def step_firmware_native_tests() -> Tuple[bool, str]:
             "g++ -std=gnu++17 -Wall -Wextra -DUNIT_TEST -I/work/include "
             "-c /work/src/controller.cpp -o /tmp/controller.o; "
             "g++ -std=gnu++17 -Wall -Wextra -DUNIT_TEST -I/work/include "
+            "-c /work/src/sensor.cpp -o /tmp/sensor.o; "
+            "g++ -std=gnu++17 -Wall -Wextra -DUNIT_TEST -I/work/include "
             "-I/tmp/unity/src -c /work/test/test_controller/test_main.cpp "
             "-o /tmp/test_main.o; "
-            "g++ /tmp/unity.o /tmp/controller.o /tmp/test_main.o -o /tmp/test_controller; "
+            "g++ /tmp/unity.o /tmp/controller.o /tmp/sensor.o /tmp/test_main.o -o /tmp/test_controller; "
             "/tmp/test_controller"
         )
         rc = run([

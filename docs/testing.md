@@ -22,15 +22,25 @@ per-requirement table.
 > **Toolchain note**: the machine this prototype was built on has no
 > native C/C++ compiler installed, so `pio test -e native` itself could
 > not run there (PlatformIO's `native` platform still needs a system
-> gcc/clang/MSVC). `firmware/src/controller.cpp` and
-> `firmware/test/test_controller/test_main.cpp` were instead compiled and
-> executed with the same standard (`-std=gnu++17`), the same
+> gcc/clang/MSVC). `firmware/src/controller.cpp`, `firmware/src/sensor.cpp`,
+> and `firmware/test/test_controller/test_main.cpp` were instead compiled
+> and executed with the same standard (`-std=gnu++17`), the same
 > `-DUNIT_TEST` flag, and the same Unity test framework version
-> (`v2.6.0`) inside a `gcc:13` Docker container - functionally identical
-> to what `pio test -e native` does, just with the toolchain supplied by
-> a container instead of the host. On a machine with a C++ compiler
-> already on `PATH` (or in CI), `pio test -e native` runs the same
-> `test_main.cpp` directly with no container needed.
+> (`v2.6.0`) inside a `gcc:13` Docker container (`scripts/run_full_check.py`
+> falls back to this automatically when PlatformIO isn't on `PATH`).
+>
+> **This fallback build does not validate `firmware/platformio.ini`
+> itself** - it invokes `g++`/`ld` directly rather than going through
+> PlatformIO's own project-config-driven test build, so a misconfigured
+> `[env:native]` (for example, a missing `test_build_src = true`, which
+> caused PlatformIO's real test runner to link only `test_main.cpp` +
+> Unity and fail with "undefined reference" errors for every
+> `VentilationController` method, even though this Docker fallback
+> passed) can go undetected locally. `.github/workflows/ci.yml` runs the
+> real `pio test -e native` on a machine with an actual compiler and is
+> the authoritative check for the PlatformIO configuration; treat a
+> green Docker-fallback run as evidence the *controller logic* is
+> correct, not as proof `pio test -e native` itself will succeed.
 3. **Automation service unit tests** (`automation/tests/`, `pytest`):
    `HysteresisRule` logic (mirrors the firmware controller's automatic-mode
    behavior), payload schema validation, boundary values, stale-telemetry
