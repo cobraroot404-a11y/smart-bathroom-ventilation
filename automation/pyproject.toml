@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "automation_service"
+version = "0.1.0"
+description = "MQTT automation rule engine for the Automated Energy-Efficient Bathroom Ventilation System"
+requires-python = ">=3.9"
+dependencies = [
+    "paho-mqtt>=1.6.1,<2",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.scripts]
+bathroom-automation = "automation_service.main:main"
+
+[tool.setuptools.packages.find]
+include = ["automation_service*"]
