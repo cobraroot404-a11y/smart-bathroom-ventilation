@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  full-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PlatformIO
+        run: pip install platformio
+
+      - name: Install automation service dependencies
+        run: pip install -r automation/requirements.txt
+
+      - name: Install simulator dependencies
+        run: pip install -r simulator/requirements.txt
+
+      - name: Run every feasible automated check
+        run: python scripts/run_full_check.py
+
+      - name: Compile firmware for esp32dev (build-only, no flashing)
+        working-directory: firmware
+        run: pio run -e esp32dev
